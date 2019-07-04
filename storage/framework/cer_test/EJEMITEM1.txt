@@ -1,0 +1,4 @@
+[REGISTRO]
+Items
+A|B|7000|Art. De Libreria||001|001|C|C|||||||N||F|U||||||S|N|S|N||||||||N|N|
+ITEMTIPOSBIEN|A|R
