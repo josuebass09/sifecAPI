@@ -186,7 +186,7 @@ function getFormaPago($medioPago)
             <strong style="font-size: 12px;">Razón Social: </strong><span style="color: #000000;font-size:12px;font-weight:bold;text-decoration: underline;"><?php echo $data->Emisor->Nombre;?></span>
             <br><br><strong style="font-size: 12px;">Nombre Comercial: </strong><span style="color: #000000;font-size:12px;font-weight:bold;text-decoration: underline;"><?php echo $nombre_comercial;?></span><br><br>
             <span style="font-size:12px;"><strong>Identificación: </strong><?php echo $data->Emisor->Identificacion->Numero?></span><br><br>
-            <span style="font-size:12px;"><strong>Teléfono: </strong><?php echo $data->Emisor->Telefono->NumTelefono?></span><span style="font-size: 14px;"><strong> Correo: </strong><span><?php echo $data->Emisor->CorreoElectronico?></span></span><br><br>
+            <span style="font-size:12px;"><strong>Teléfono: </strong><?php if(isset($data->Emisor->Telefono->NumTelefono) AND $data->Emisor->Telefono->NumTelefono!=''){ echo $data->Emisor->Telefono->NumTelefono;}?></span><span style="font-size: 14px;"><strong> Correo: </strong><span><?php echo $data->Emisor->CorreoElectronico?></span></span><br><br>
 
             <span style="font-size:12px;"><strong>Dirección: </strong><?php echo $data->Emisor->Ubicacion->OtrasSenas?></span><br>
 
@@ -236,7 +236,7 @@ function getFormaPago($medioPago)
 <tr style="margin-top: 0px;">
 
     <td style="width: 75%; color: #000000;font-size:12px;text-align:left;line-height: 25px;">
-        <span style="font-size: 12px;"><strong>Teléfono: </strong><span><?php echo $data->Receptor->Telefono->NumTelefono; ?> </span></span>
+        <span style="font-size: 12px;"><strong>Teléfono: </strong><span><?php if(isset($data->Receptor->Telefono->NumTelefono) AND $data->Receptor->Telefono->NumTelefono!=''){ echo $data->Receptor->Telefono->NumTelefono;} ?> </span></span>
     </td>
     <td style="width: 75%; color: #000000;font-size:14px;text-align:right;line-height: 25px;">
         <span style="font-size: 12px;"><strong>Forma de Pago:</strong><span> <?php echo getFormaPago($data->MedioPago);?></span></span>
