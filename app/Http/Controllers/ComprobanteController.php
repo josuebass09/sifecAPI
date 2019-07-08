@@ -5259,7 +5259,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                         DB::table('GASTOS')->where('clave_gasto','=',$payload['clave'])->update(['estado' => $resposeText->estado,'xml_result'=>$resposeText->resultXml]);
                     }
                     else{
-                        return response()->json(array("code"=>"0","data"=>"El estado de la respuesta no existe","fecha"=>$fecha), 200);
+                        return response()->json(array("code"=>"0","msj"=>"El estado de la respuesta no existe","data"=>$resposeText,"fecha"=>$fecha), 200);
                     }
                     return response()->json(array("code"=>"1","data"=>$resposeText,"fecha"=>$fecha), 200);
                 }
