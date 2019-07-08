@@ -156,6 +156,13 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             return response()->json(array("code"=>"0","data"=>"Tipo de comprobante inválido","fecha"=>$fecha,"tipoComprobante"=>$payload['tipoComprobante']), 400);
         }
+        try{
+            $this->updateConsecutive($emisor->id,$payload['tipoComprobante'],$entorno);
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
+        }
         $num_consecutivo++;
         $consecutivo=str_pad($num_consecutivo,10,"0",STR_PAD_LEFT);
         if(isset($payload['sucursal']))
@@ -225,13 +232,6 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             $seguridad=$payload['codSeguridad'];
         }
         $clave = $codigoPais . $dia . $mes . $ano . $identificacion . $consecutivoFinal . $payload['situacion'] . $seguridad;
-        try{
-            $this->updateConsecutive($emisor->id,$payload['tipoComprobante'],$entorno);
-        }
-        catch(\Exception $exception)
-        {
-            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
-        }
         return response()->json(array("code"=>"1","data"=>$clave), 200);
     }
     function generateSecurityCod($length) {
