@@ -5270,7 +5270,14 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
 
             }
             try{
-                DB::table('COMPROBANTES')->where('clave','=',$payload['clave'])->update(['estado' => $resposeText->estado,'xml_result'=>$resposeText->resultXml]);
+                if(isset($resposeText->estado) AND $resposeText->estado!='')
+                {
+                    $resultXml=$resposeText->resultXml;
+                    DB::table('COMPROBANTES')->where('clave','=',$payload['clave'])->update(['estado' => $resposeText->estado,'xml_result'=>$resultXml]);
+                }
+                else{
+                    return response()->json(array("code"=>"0","msj"=>"Estado ATV no disponible","data"=>$resposeText,"fecha"=>$fecha), 200);
+                }
                 $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.nombre_receptor','COMPROBANTES.email_receptor','COMPROBANTES.tp_comprobante','COMPROBANTES.numeracion','COMPROBANTES.cc')->where('clave','=',$payload['clave'])->first();
                 if(isset($resposeText->estado) AND $resposeText->estado==="aceptado" AND isset($comprobante->email_receptor) AND $comprobante->email_receptor!='')
                 {
