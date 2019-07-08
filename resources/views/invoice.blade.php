@@ -420,10 +420,14 @@ function getFormaPago($medioPago)
                         <th class="segundaTh">Total Impuestos</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalImpuesto'])){ echo number_format($xml_res['TotalImpuesto'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
+                <?php if(isset($xml_res['TotalIVADevuelto']) AND !empty($xml_res['TotalIVADevuelto']))
+                    {
+                        ?>
                 <tr>
                     <th class="segundaTh">Total IVA Devuelto</th>
                     <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalIVADevuelto'])){ echo number_format($xml_res['TotalIVADevuelto'],2,'.',',');}else{ echo "0.00";}?></th>
                 </tr>
+                <?php }?>
                 <tr>
                     <th class="segundaTh">Total Otros Cargos</th>
                     <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalIVADevuelto'])){ echo number_format($xml_res['TotalIVADevuelto'],2,'.',',');}else{ echo "0.00";}?></th>
