@@ -225,6 +225,13 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             $seguridad=$payload['codSeguridad'];
         }
         $clave = $codigoPais . $dia . $mes . $ano . $identificacion . $consecutivoFinal . $payload['situacion'] . $seguridad;
+        try{
+            $this->updateConsecutive($emisor->id,$payload['tipoComprobante'],$entorno);
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
+        }
         return response()->json(array("code"=>"1","data"=>$clave), 200);
     }
     function generateSecurityCod($length) {
@@ -604,10 +611,11 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         }
         try{
             $this->saveReceipt($payload['xml'],$easyResponse['response']->signedXml,$easyResponse['http_status_easy'],"1",$easyResponse['response']->estado,$cc);
-            if($this->updateConsecutive($emisor,substr($payload['clave'], 29, 2),$entorno)){
+            /*if($this->updateConsecutive($emisor,substr($payload['clave'], 29, 2),$entorno)){
                 return response()->json(array("code"=>"1","data"=>$easyResponse,"fecha"=>$fecha), 200);
-            }
-            return response()->json(array("code"=>"0","data"=>"Ha ocurrido un error al actualizar el consecutivo","fecha"=>$fecha), 500);
+            }*/
+            //return response()->json(array("code"=>"0","data"=>"Ha ocurrido un error al actualizar el consecutivo","fecha"=>$fecha), 500);
+            return response()->json(array("code"=>"1","data"=>$easyResponse,"fecha"=>$fecha), 200);
         }
         catch (\Exception $exception)
         {
