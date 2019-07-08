@@ -350,7 +350,7 @@ function getFormaPago($medioPago)
 <table width="50%" style="font-size: 12px;float: left;" id="tabla_observaciones">
 
                     <tr>
-                        <th class="primeraTh">Observaciones(Otros)</th>
+                        <th class="primeraTh">Observaciones</th>
 
                     </tr>
                     <tr>
@@ -360,57 +360,77 @@ function getFormaPago($medioPago)
 
             <table  width="50%" style="font-size: 12px;float: right;" id="tabla_resumen">
                     <tr>
-                        <th class="segundaTh">Total servicios gravados</th>
+                        <th class="segundaTh">Total Servicios Gravados</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalServGravados'])){ echo number_format($xml_res['TotalServGravados'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th  class="segundaTh">Total servicios exentos</th>
+                        <th  class="segundaTh">Total Servicios Exentos</th>
                         <th align="right"  class="terceraTh"><?php if(!empty($xml_res['TotalServExentos'])){echo number_format($xml_res['TotalServExentos'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
+                <tr>
+                    <th  class="segundaTh">Total Servicios Exonerados</th>
+                    <th align="right"  class="terceraTh"><?php if(!empty($xml_res['TotalServExonerado'])){echo number_format($xml_res['TotalServExonerado'],2,'.',',');}else{ echo "0.00";}?></th>
+                </tr>
 
                     <tr>
-                        <th class="segundaTh">Total mercancías gravadas</th>
+                        <th class="segundaTh">Total Mercancías Gravadas</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalMercanciasGravadas'])){echo number_format($xml_res['TotalMercanciasGravadas'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th class="segundaTh">Total mercancías exentas</th>
+                        <th class="segundaTh">Total Mercancías Exentas</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalMercanciasExentas'])){ echo number_format($xml_res['TotalMercanciasExentas'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
+                <tr>
+                    <th class="segundaTh">Total Mercancías Exoneradas</th>
+                    <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalMercExonerada'])){ echo number_format($xml_res['TotalMercExonerada'],2,'.',',');}else{ echo "0.00";}?></th>
+                </tr>
                     <tr>
 
-                        <th class="segundaTh">Total gravado</th>
+                        <th class="segundaTh">Total Gravado</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalGravado'])){echo number_format($xml_res['TotalGravado'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th class="segundaTh">Total exento</th>
+                        <th class="segundaTh">Total Exento</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalExento'])){ echo number_format($xml_res['TotalExento'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
+                <tr>
+                    <th class="segundaTh">Total Exonerado</th>
+                    <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalExonerado'])){ echo number_format($xml_res['TotalExonerado'],2,'.',',');}else{ echo "0.00";}?></th>
+                </tr>
                     <tr>
 
-                        <th class="segundaTh">Total venta</th>
+                        <th class="segundaTh">Total Venta</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalVenta'])){ echo number_format($xml_res['TotalVenta'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th class="segundaTh">Total descuento</th>
+                        <th class="segundaTh">Total Descuento</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalDescuentos'])){ echo number_format($xml_res['TotalDescuentos'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th class="segundaTh">Total venta neta</th>
+                        <th class="segundaTh">Total Venta Neta</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalVentaNeta'])){echo number_format($xml_res['TotalVentaNeta'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
                     <tr>
 
-                        <th class="segundaTh">Total impuestos</th>
+                        <th class="segundaTh">Total Impuestos</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalImpuesto'])){ echo number_format($xml_res['TotalImpuesto'],2,'.',',');}else{ echo "0.00";}?></th>
                     </tr>
+                <tr>
+                    <th class="segundaTh">Total IVA Devuelto</th>
+                    <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalIVADevuelto'])){ echo number_format($xml_res['TotalIVADevuelto'],2,'.',',');}else{ echo "0.00";}?></th>
+                </tr>
+                <tr>
+                    <th class="segundaTh">Total Otros Cargos</th>
+                    <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalIVADevuelto'])){ echo number_format($xml_res['TotalIVADevuelto'],2,'.',',');}else{ echo "0.00";}?></th>
+                </tr>
                     <tr>
 
-                        <th class="segundaTh" style="border-bottom: 1px solid #fff;">Total comprobante</th>
+                        <th class="segundaTh" style="border-bottom: 1px solid #fff;">Total Comprobante</th>
                         <th align="right" class="terceraTh" style="border-bottom: 1px solid #fff;"><?php echo number_format($xml_res['TotalComprobante'],2,'.',',');?></th>
                     </tr>
                 </table>
