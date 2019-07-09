@@ -5428,7 +5428,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
     public function downloadPdfInvoice(Request $request)
     {
 
-        $clave=$request->post('clave');
+        $clave=$request->get('clave');
         if($clave=='' or is_null($clave))
         {
             return response()->json(array("code"=>"0","data"=>"La [clave] del comprobante electrónico es requerida"), 400);
