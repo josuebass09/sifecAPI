@@ -56,6 +56,7 @@ class ComprobanteController extends Controller
         $sucursal="001";
         $terminal="00001";
         $codigoPais="506";
+        $id_emisor="";
         $entorno=$request->header('entorno');
         if(!isset($api_key) OR empty($api_key))
         {
@@ -84,6 +85,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto","X-Api-Key"=>$request->header('X-Api-Key')), 401);
         }
+        $id_emisor=$emisor->id;
 
         //Se validan los tipos de datos y limitaciones
         $rules = [
@@ -156,14 +158,8 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             return response()->json(array("code"=>"0","data"=>"Tipo de comprobante inválido","fecha"=>$fecha,"tipoComprobante"=>$payload['tipoComprobante']), 400);
         }
-        try{
-            $this->updateConsecutive($emisor->id,$payload['tipoComprobante'],$entorno);
-        }
-        catch(\Exception $exception)
-        {
-            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
-        }
         $num_consecutivo++;
+
         $consecutivo=str_pad($num_consecutivo,10,"0",STR_PAD_LEFT);
         if(isset($payload['sucursal']))
         {
@@ -232,6 +228,15 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             $seguridad=$payload['codSeguridad'];
         }
         $clave = $codigoPais . $dia . $mes . $ano . $identificacion . $consecutivoFinal . $payload['situacion'] . $seguridad;
+        try{
+            $this->updateConsecutive($emisor,$payload['tipoComprobante'],$entorno,$num_consecutivo);
+
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
+        }
+
         return response()->json(array("code"=>"1","data"=>$clave), 200);
     }
     function generateSecurityCod($length) {
@@ -5307,14 +5312,14 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
 
     }
 
-    public function updateConsecutive($emisor,$tipoComprobante,$entorno)
+    public function updateConsecutive($emisor,$tipoComprobante,$entorno,$numConsecutivo)
     {
         if($entorno=='stag') {
             if ($tipoComprobante == "01") {
                 //return DB::table('EMISORES')->where('id',$emisor->id)->update(['consecutivoFEtest'=>$emisor->consecutivoFEtest++]);
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFEtest++;
+                    $e->consecutivoFEtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5322,7 +5327,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "02") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoNDtest++;
+                    $e->consecutivoNDtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5330,7 +5335,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "03") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoNCtest++;
+                    $e->consecutivoNCtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5338,7 +5343,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "04") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoTEtest++;
+                    $e->consecutivoTEtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5347,7 +5352,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             elseif ($tipoComprobante == "08") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFECtest++;
+                    $e->consecutivoFECtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5356,7 +5361,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             elseif ($tipoComprobante == "09") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFEEtest++;
+                    $e->consecutivoFEEtest=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5369,7 +5374,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                 //return DB::table('EMISORES')->where('id',$emisor->id)->update(['consecutivoFEtest'=>$emisor->consecutivoFEtest++]);
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFEprod++;
+                    $e->consecutivoFEprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5377,7 +5382,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "02") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoNDprod++;
+                    $e->consecutivoNDprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5385,7 +5390,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "03") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoNCprod++;
+                    $e->consecutivoNCprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5393,7 +5398,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             } elseif ($tipoComprobante == "04") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoTEprod++;
+                    $e->consecutivoTEprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5402,7 +5407,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             elseif ($tipoComprobante == "08") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFECprod++;
+                    $e->consecutivoFECprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -5411,7 +5416,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             elseif ($tipoComprobante == "09") {
                 try {
                     $e = Emisor::find($emisor->id);
-                    $e->consecutivoFEEprod++;
+                    $e->consecutivoFEEprod=$numConsecutivo;
                     return $e->save();
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
