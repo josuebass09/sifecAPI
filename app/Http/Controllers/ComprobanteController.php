@@ -5425,5 +5425,23 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         }
 
     }
+    public function downloadPdfInvoice(Request $request)
+    {
+
+        $clave=$request->post('clave');
+        if($clave=='' or is_null($clave))
+        {
+            return response()->json(array("code"=>"0","data"=>"La [clave] del comprobante electrónico es requerida"), 400);
+        }
+
+        $xmlFirmado=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado')->where('COMPROBANTES.clave','=',$clave)->first()->xml_firmado;
+        if(!$xmlFirmado or $xmlFirmado=='')
+        {
+            return "El comprobante electrónico [".$clave."] en formato PDF no se encuetra disponible.";
+        }
+        $url=$this->makeInvoice($clave);
+        return \response()->download($url)->deleteFileAfterSend(true);
+    }
+
 
 }

@@ -107,6 +107,9 @@ Route::get('/api/testcorreo', array('as' => 'testcorreo',
 //Ruta easy pos temporal
 Route::get('/easypos', array('as' => 'easypos',
     'uses' => 'ComprobanteController@getEasypos'));
+//Ruta para descargar el PDF
+Route::post('/api/downloadReceipt', array('as' => 'downloadReceipt',
+    'uses' => 'ComprobanteController@downloadPdfInvoice'));
 
 
 
