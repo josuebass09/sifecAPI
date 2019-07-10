@@ -88,15 +88,47 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
 
 
         $fecha=date(DATE_RFC3339);
+        $cedula_emisor=$payload['emisor']['numero'];
+        $cedula_receptor=$payload['receptor']['numero'];
+        if(strlen($payload['emisor']['numero'])==9)
+        {
+            $cedula_emisor="000".$payload['emisor']['numero'];
+        }
+        elseif(strlen($payload['emisor']['numero'])==10)
+        {
+            $cedula_emisor="00".$payload['emisor']['numero'];
+        }
+        elseif(strlen($payload['emisor']['numero'])==11)
+        {
+            $cedula_emisor="0".$payload['emisor']['numero'];
+        }
+
+        if(strlen($payload['receptor']['numero'])==9)
+        {
+            $cedula_receptor="000".$payload['receptor']['numero'];
+        }
+        elseif(strlen($payload['receptor']['numero'])==10)
+        {
+            $cedula_receptor="00".$payload['receptor']['numero'];
+        }
+        elseif(strlen($payload['receptor']['numero'])==11)
+        {
+            $cedula_receptor="0".$payload['receptor']['numero'];
+        }
+
+        //$payload['receptor']['numero']
 
         $xmlString = '<?xml version="1.0" encoding="utf-8"?>
     <MensajeReceptor xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://cdn.comprobanteselectronicos.go.cr/xml-schemas/v4.3/mensajeReceptor">
     <Clave>' . $payload['clave'] . '</Clave>
-    <NumeroCedulaEmisor>' . $payload['emisor']['numero'] . '</NumeroCedulaEmisor>
+    <NumeroCedulaEmisor>' . $cedula_emisor. '</NumeroCedulaEmisor>
     <FechaEmisionDoc>' . $fecha . '</FechaEmisionDoc>
     <Mensaje>' . $payload['mensaje'] . '</Mensaje>';
         if (!empty($payload['detalle_mensaje'])) {
             $xmlString .= '<DetalleMensaje>' . $payload['detalle_mensaje'] . '</DetalleMensaje>';
+        }
+        if (!empty($payload['monto_total_impuesto'])) {
+            $xmlString .= '<MontoTotalImpuesto>' . $payload['monto_total_impuesto'] . '</MontoTotalImpuesto>';
         }
         if (!empty($payload['codigo_actividad'])) {
             $xmlString .='<CodigoActividad>'.$payload['codigo_actividad'].'</CodigoActividad>';
@@ -105,20 +137,19 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             $xmlString .= '<CondicionImpuesto>' . $payload['condicion_impuesto'] . '</CondicionImpuesto>';
         }
-        if(!empty($payload['monto_total_imp_acred']))
-        {
-            $xmlString .= '<MontoTotalImpuestoAcreditar>' . $payload['monto_total_imp_acred'] . '</MontoTotalImpuestoAcreditar>';
-        }
         if(!empty($payload['monto_total_gast_aplic']))
         {
             $xmlString .= '<MontoTotalDeGastoAplicable>' . $payload['monto_total_gast_aplic'] . '</MontoTotalDeGastoAplicable>';
         }
-        if (!empty($payload['monto_total_impuesto'])) {
-            $xmlString .= '<MontoTotalImpuesto>' . $payload['monto_total_impuesto'] . '</MontoTotalImpuesto>';
+        if(!empty($payload['monto_total_imp_acred']))
+        {
+            $xmlString .= '<MontoTotalImpuestoAcreditar>' . $payload['monto_total_imp_acred'] . '</MontoTotalImpuestoAcreditar>';
         }
 
+
+
         $xmlString .= '<TotalFactura>' . $payload['total_factura'] . '</TotalFactura>
-    <NumeroCedulaReceptor>' . $payload['receptor']['numero'] . '</NumeroCedulaReceptor>
+    <NumeroCedulaReceptor>' . $cedula_receptor . '</NumeroCedulaReceptor>
     <NumeroConsecutivoReceptor>' . $payload['num_consecutivo_receptor'] . '</NumeroConsecutivoReceptor>';
 
         $xmlString .= '</MensajeReceptor>';
