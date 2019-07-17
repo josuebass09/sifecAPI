@@ -137,14 +137,15 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             $xmlString .= '<CondicionImpuesto>' . $payload['condicion_impuesto'] . '</CondicionImpuesto>';
         }
-        if(!empty($payload['monto_total_gast_aplic']))
-        {
-            $xmlString .= '<MontoTotalDeGastoAplicable>' . $payload['monto_total_gast_aplic'] . '</MontoTotalDeGastoAplicable>';
-        }
         if(!empty($payload['monto_total_imp_acred']))
         {
             $xmlString .= '<MontoTotalImpuestoAcreditar>' . $payload['monto_total_imp_acred'] . '</MontoTotalImpuestoAcreditar>';
         }
+        if(!empty($payload['monto_total_gast_aplic']))
+        {
+            $xmlString .= '<MontoTotalDeGastoAplicable>' . $payload['monto_total_gast_aplic'] . '</MontoTotalDeGastoAplicable>';
+        }
+
 
 
 
