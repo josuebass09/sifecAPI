@@ -30,12 +30,12 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         if($entorno=='stag')
         {
             $url=env('EASY_ATV_SERVER_TEST')."/easy-atv/api/atv/recepcion";
-            $emisor=DB::table('EMISORES')->select('EMISORES.id','EMISORES.api_key','EMISORES.usuario_atv_test','EMISORES.contrasena_atv_test','EMISORES.certificado_atv_test','EMISORES.pin_atv_test','EMISORES.consecutivoGAtest')->where('EMISORES.api_key','=',$api_key)->first();
+            $emisor=DB::table('EMISORES')->select('EMISORES.id','id_tpidentificacion','EMISORES.api_key','EMISORES.usuario_atv_test','EMISORES.contrasena_atv_test','EMISORES.certificado_atv_test','EMISORES.pin_atv_test','EMISORES.consecutivoGAtest')->where('EMISORES.api_key','=',$api_key)->first();
         }
         elseif($entorno=='prod')
         {
             $url=env('EASY_ATV_SERVER_PROD')."/easy-atv/api/atv/recepcion";
-            $emisor=DB::table('EMISORES')->select('EMISORES.id','EMISORES.api_key','EMISORES.usuario_atv_prod','EMISORES.contrasena_atv_prod','EMISORES.certificado_atv_prod','EMISORES.pin_atv_prod','EMISORES.consecutivoGAprod')->where('EMISORES.api_key','=',$api_key)->first();
+            $emisor=DB::table('EMISORES')->select('EMISORES.id','id_tpidentificacion','EMISORES.api_key','EMISORES.usuario_atv_prod','EMISORES.contrasena_atv_prod','EMISORES.certificado_atv_prod','EMISORES.pin_atv_prod','EMISORES.consecutivoGAprod')->where('EMISORES.api_key','=',$api_key)->first();
         }
         else{
             return response()->json(array("code"=>"26","data"=>"Ambiente incorrecto. Ambientes disponibles:[stag] para pruebas y [prod] para producción","entorno"=>$request->header('entorno')), 401);
@@ -52,20 +52,14 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             'emisor.tipo' => ['required'],
             'mensaje' => ['required','numeric','regex:/^[1-3]+$/u'],
             'total_factura'=>['required'],
-            'receptor' => ['required'],
-            'receptor.tipo'=>['required'],
-            'receptor.numero'=>['required'],
             'num_consecutivo_receptor'=>['required']
         ];
         $customMessages = [
             'emisor.required' => 'El nodo [emisor] es requerido *10',
-            'receptor.required' => 'El nodo [receptor] es requerido *10',
             'emisor.numero.required' => 'El nodo [emisor][numero] es requerido *10',
             'emisor.tipo.required' => 'El nodo [emisor][tipo] es requerido *10',
             'mensaje.required' => 'El nodo [mensaje] es requerido *10',
             'total_factura.required'=>'El nodo [total_factura] es requerido *10',
-            'receptor.numero.required' => 'El nodo [receptor][numero] es requerido *10',
-            'receptor.tipo.required' => 'El nodo [receptor][tipo] es requerido *10',
             'num_consecutivo_receptor.required'=>'El nodo [num_consecutivo_receptor] es requerido *10',
             'mensaje.numeric' => 'El nodo [mensaje] sólo permite valores del 1 al 3. *41',
             'mensaje.regex' => 'El nodo [mensaje] sólo permite valores del 1 al 3. *41',
@@ -89,7 +83,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
 
         $fecha=date(DATE_RFC3339);
         $cedula_emisor=$payload['emisor']['numero'];
-        $cedula_receptor=$payload['receptor']['numero'];
+        $cedula_receptor=$emisor->id;
         if(strlen($payload['emisor']['numero'])==9)
         {
             $cedula_emisor="000".$payload['emisor']['numero'];
@@ -103,17 +97,17 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             $cedula_emisor="0".$payload['emisor']['numero'];
         }
 
-        if(strlen($payload['receptor']['numero'])==9)
+        if(strlen($emisor->id)==9)
         {
-            $cedula_receptor="000".$payload['receptor']['numero'];
+            $cedula_receptor="000".$emisor->id;
         }
-        elseif(strlen($payload['receptor']['numero'])==10)
+        elseif(strlen($emisor->id)==10)
         {
-            $cedula_receptor="00".$payload['receptor']['numero'];
+            $cedula_receptor="00".$emisor->id;
         }
-        elseif(strlen($payload['receptor']['numero'])==11)
+        elseif(strlen($emisor->id)==11)
         {
-            $cedula_receptor="0".$payload['receptor']['numero'];
+            $cedula_receptor="0".$emisor->id;
         }
 
         //$payload['receptor']['numero']
@@ -164,7 +158,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                 "certificateLocation"=>"cer_sandbox/".$emisor->certificado_atv_test,
                 "certificatePassword"=>$emisor->pin_atv_test,
                 "transmitterIdType"=>$payload['emisor']['tipo'],
-                "receiverIdType"=>$payload['receptor']['tipo'],
+                "receiverIdType"=>$emisor->id_tpidentificacion,
                 "xmlToSign"=>$xml64);
             $ambiente_easy=Array("Content-Type: application/json","X-KeyLicense: wHSz8BoayhIJQjtP","X-Retrieve-SignedXml:true","X-Environment-Hacienda:test");
 
@@ -176,7 +170,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                 "certificateLocation"=>"cer/".$emisor->certificado_atv_prod,
                 "certificatePassword"=>$emisor->pin_atv_prod,
                 "transmitterIdType"=>$payload['emisor']['tipo'],
-                "receiverIdType"=>$payload['receptor']['tipo'],
+                "receiverIdType"=>$emisor->id_tpidentificacion,
                 "xmlToSign"=>$xml64);
             $ambiente_easy=Array("Content-Type: application/json","X-KeyLicense: wHSz8BoayhIJQjtP","X-Retrieve-SignedXml:true","X-Environment-Hacienda:prod");
         }
@@ -188,7 +182,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$ambiente_easy);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 400);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
         $resposeText = curl_exec($ch);
         $respuesta=json_decode($resposeText);
