@@ -277,5 +277,52 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             }
         }
     }
+    public function getConsecutivoGA(Request $request)
+    {
+        $emisor=null;
+        $api_key=$request->header('X-Api-Key');
+        $entorno=$request->header('entorno');
+
+        if(!isset($api_key) OR empty($api_key))
+        {
+            return response()->json(array("code"=>"3","data"=>"Requiere que se incluya el API KEY dentro de los parámetros para
+poder realizar el proceso."), 400);
+        }
+        if(!isset($entorno) OR empty($entorno))
+        {
+            return response()->json(array("code"=>"10","data"=>"Requiere que se incluya el entorno dentro de los parámetros del encabezado de la solicitud."), 400);
+        }
+        $payload=$request->json()->all();
+        $consecutivoGA=0;
+
+        if(!$emisor)
+        {
+            return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto","api_key"=>$request->header('api_key')), 401);
+        }
+        if($entorno=='stag')
+        {
+            $emisor=DB::table('EMISORES')->select('EMISORES.id','EMISORES.consecutivoGAtest')->where('EMISORES.api_key','=',$api_key)->first();
+            $consecutivoGA=$emisor->consecutivoGAtest;
+        }
+        elseif($entorno=='prod')
+        {
+            $emisor=DB::table('EMISORES')->select('EMISORES.id','EMISORES.consecutivoGAprod')->where('EMISORES.api_key','=',$api_key)->first();
+            $consecutivoGA=$emisor->consecutivoGAprod;
+
+        }
+        else{
+            return response()->json(array("code"=>"26","data"=>"Ambiente incorrecto. Ambientes disponibles:[stag] para pruebas y [prod] para producción","entorno"=>$request->header('entorno')), 401);
+        }
+        $consecutivoGA++;
+        try{
+            $this->updateConsecutivo($entorno,$emisor->id);
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
+        }
+
+        return response()->json(array("code"=>"1","data"=>$consecutivoGA), 200);
+    }
 
 }

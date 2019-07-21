@@ -99,6 +99,8 @@ Route::post('/api/makeClave', array('as' => 'makeClave',
     'uses' => 'ComprobanteController@makeClave'));
 Route::post('/api/updatePOSConsecutive', array('as' => 'updatePOSConsecutive',
     'uses' => 'ComprobanteController@updateConsecutivePOS'));
+Route::post('/api/getGaConsecutive', array('as' => 'getGaConsecutive',
+    'uses' => 'GastoController@getConsecutivoGA'));
 
 
 //Prueba del correo
