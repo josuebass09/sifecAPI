@@ -294,10 +294,6 @@ poder realizar el proceso."), 400);
         }
         $consecutivoGA=0;
 
-        if(!$emisor)
-        {
-            return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto","api_key"=>$request->header('api_key')), 401);
-        }
         if($entorno=='stag')
         {
             $emisor=DB::table('EMISORES')->select('EMISORES.id','EMISORES.consecutivoGAtest')->where('EMISORES.api_key','=',$api_key)->first();
@@ -311,6 +307,10 @@ poder realizar el proceso."), 400);
         }
         else{
             return response()->json(array("code"=>"26","data"=>"Ambiente incorrecto. Ambientes disponibles:[stag] para pruebas y [prod] para producción","entorno"=>$request->header('entorno')), 401);
+        }
+        if(!$emisor)
+        {
+            return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto","api_key"=>$request->header('api_key')), 401);
         }
         $consecutivoGA++;
         try{
