@@ -292,7 +292,6 @@ poder realizar el proceso."), 400);
         {
             return response()->json(array("code"=>"10","data"=>"Requiere que se incluya el entorno dentro de los parámetros del encabezado de la solicitud."), 400);
         }
-        $payload=$request->json()->all();
         $consecutivoGA=0;
 
         if(!$emisor)
