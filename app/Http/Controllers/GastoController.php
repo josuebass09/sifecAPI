@@ -322,7 +322,6 @@ poder realizar el proceso."), 400);
         {
             return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto","api_key"=>$request->header('api_key')), 401);
         }
-        $consecutivoGA++;
         try{
             $this->updateConsecutivo($entorno,$emisor->id);
         }
@@ -331,7 +330,7 @@ poder realizar el proceso."), 400);
             return response()->json(array("code"=>"0","msj"=>"Error al actualizar el consecutivo","data"=>$exception->getMessage()), 500);
         }
 
-        return response()->json(array("code"=>"1","data"=>$consecutivoGA), 200);
+        return response()->json(array("code"=>"1","data"=>$consecutivoGA++), 200);
     }
 
 }
