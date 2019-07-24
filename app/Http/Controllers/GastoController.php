@@ -231,6 +231,22 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             $gasto->respuesta_api=1;
             $gasto->http_hacienda=null;
             $gasto->location=$location;
+            if(isset($payload['codigo_actividad']) AND $payload['codigo_actividad']!='')
+            {
+                $gasto->actividad_ec=$payload['codigo_actividad'];
+            }
+            if(isset($payload['condicion_impuesto']) AND $payload['condicion_impuesto']!='')
+            {
+                $gasto->condicion_imp=$payload['condicion_impuesto'];
+            }
+            if(isset($payload['monto_total_imp_acred']) AND $payload['monto_total_imp_acred']!='')
+            {
+                $gasto->total_acred=$payload['monto_total_imp_acred'];
+            }
+            if(isset($payload['monto_total_gast_aplic']) AND $payload['monto_total_gast_aplic']!='')
+            {
+                $gasto->total_apli=$payload['monto_total_gast_aplic'];
+            }
             $gasto->save();
             $this->updateConsecutivo($entorno,$emisor->id);
             return response()->json(array("code"=>"1","data"=>json_decode($resposeText),"fecha"=>$fecha), 200);

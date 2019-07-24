@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $respuesta_api
  * @property string $http_hacienda
  * @property string $location
+ * @property int $actividad_ec
+ * @property string $condicion_imp
+ * @property float $total_acred
+ * @property float $total_apli
  * @property EMISORE $eMISORE
  * @property TPIDENTIFICACIONE $tPIDENTIFICACIONE
 
@@ -42,7 +46,7 @@ class Gasto extends Model
     /**
      * @var array
      */
-    protected $fillable = ['clave_comprobante', 'clave_gasto', 'consecutivo_recepcion', 'identificacion_emisor', 'fecha_gasto', 'mensaje', 'detalle', 'total_impuestos', 'total_comprobante', 'xml_completo', 'xml_result', 'estado', 'respuesta_api', 'http_hacienda','location'];
+    protected $fillable = ['clave_comprobante', 'clave_gasto', 'consecutivo_recepcion', 'identificacion_emisor', 'fecha_gasto', 'mensaje', 'detalle', 'total_impuestos', 'total_comprobante', 'xml_completo', 'xml_result', 'estado', 'respuesta_api', 'http_hacienda','location','actividad_ec','condicion_imp','total_acred','total_apli'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
