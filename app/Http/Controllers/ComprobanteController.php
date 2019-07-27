@@ -279,7 +279,12 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         $comprobante->xml_firmado = $signedXml;
         //$comprobante->xml_result=$resultXml;
         $comprobante->subtotal_comprobante = $xmlObj->ResumenFactura->TotalVenta;
-        $comprobante->total_impuestos = $xmlObj->ResumenFactura->TotalImpuesto;
+        $comprobante->total_impuestos=0;
+        if(isset($xmlObj->ResumenFactura->TotalImpuesto) AND $xmlObj->ResumenFactura->TotalImpuesto!='')
+        {
+            $comprobante->total_impuestos = $xmlObj->ResumenFactura->TotalImpuesto;
+        }
+        
         $comprobante->total_comprobante = $xmlObj->ResumenFactura->TotalComprobante;
         $comprobante->http_hacienda = $http_hacienda;
         $comprobante->respuesta_api = $respuesta_api;
