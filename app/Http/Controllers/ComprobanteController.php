@@ -284,7 +284,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             $comprobante->total_impuestos = $xmlObj->ResumenFactura->TotalImpuesto;
         }
-        
+
         $comprobante->total_comprobante = $xmlObj->ResumenFactura->TotalComprobante;
         $comprobante->http_hacienda = $http_hacienda;
         $comprobante->respuesta_api = $respuesta_api;
@@ -1267,7 +1267,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -1957,7 +1957,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -2665,7 +2665,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -3442,7 +3442,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -4199,7 +4199,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -4859,7 +4859,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<CodigoTarifa>' . $i['codigo_tarifa'] . '</CodigoTarifa>';
                         }
                     }
-                    if(!isset($i['tarifa']) OR $i['tarifa']=='')
+                    if(!isset($i['tarifa']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [tarifa] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
