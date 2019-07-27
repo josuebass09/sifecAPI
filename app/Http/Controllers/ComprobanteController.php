@@ -1283,7 +1283,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -1973,7 +1973,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -2681,7 +2681,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -3458,7 +3458,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -4215,7 +4215,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
@@ -4875,7 +4875,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                             $xmlString .='<FactorIVA>' . $i['factor_iva'] . '</FactorIVA>';
                         }
                     }
-                    if(!isset($i['monto']) OR $i['monto']=='')
+                    if(!isset($i['monto']))
                     {
                         return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [monto] en la linea de detalle  [".$l."] de la linea del impuesto [".$numImp."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
                     }
