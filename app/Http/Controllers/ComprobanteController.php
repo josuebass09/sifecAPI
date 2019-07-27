@@ -1227,11 +1227,6 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
             }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
-
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {
                 foreach ($d['impuestos'] as $y)
@@ -1920,10 +1915,6 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             }
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
-            }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
             }
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {
@@ -2634,10 +2625,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
             }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
+
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {
                 foreach ($d['impuestos'] as $y) {
@@ -3414,10 +3402,6 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
             }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {
                 foreach ($d['impuestos'] as $y)
@@ -4173,10 +4157,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
             }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
+
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {
                 foreach ($d['impuestos'] as $y)
@@ -4851,10 +4832,7 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<SubTotal>' . $d['subtotal'] . '</SubTotal>';
             }
-            if(!isset($d['impuestos']) OR $d['impuestos'] == "")
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El nodo [impuestos] en la linea de detalle [".$l."] es requerido", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
+
             if (isset($d['impuestos']) && $d['impuestos'] != "")
             {$numImp=1;
                 foreach ($d['impuestos'] as $i)
