@@ -695,33 +695,65 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
 
             }else{
                 $tipoComprobante = substr($payload['clave'], 29, 2);
-                $payload['emisor']['nombre']=$emisor->razon_social;
-                $payload['emisor']['identificacion']['tipo']=$emisor->id_tpidentificacion;
-                $payload['emisor']['identificacion']['numero']=$emisor->id;
-                $payload['emisor']['nombre_comercial']=$emisor->nombre_comercial;
-                $payload['emisor']['ubicacion']['provincia']=$emisor->provincia;
-                $payload['emisor']['ubicacion']['canton']=$emisor->canton;
-                $payload['emisor']['ubicacion']['distrito']=$emisor->distrito;
-                if($emisor->barrio=='00' OR $emisor->barrio=='')
+                if($tipoComprobante=='08')
                 {
-                    $payload['emisor']['ubicacion']['barrio']='01';
+                    $payload['receptor']['nombre']=$emisor->razon_social;
+                    $payload['receptor']['identificacion']['tipo']=$emisor->id_tpidentificacion;
+                    $payload['receptor']['identificacion']['numero']=$emisor->id;
+                    $payload['receptor']['nombre_comercial']=$emisor->nombre_comercial;
+                    $payload['receptor']['ubicacion']['provincia']=$emisor->provincia;
+                    $payload['receptor']['ubicacion']['canton']=$emisor->canton;
+                    $payload['receptor']['ubicacion']['distrito']=$emisor->distrito;
+                    if($emisor->barrio=='00' OR $emisor->barrio=='')
+                    {
+                        $payload['receptor']['ubicacion']['barrio']='01';
+                    }
+                    else{
+                        $payload['receptor']['ubicacion']['barrio']=$emisor->barrio;
+                    }
+                    $payload['receptor']['ubicacion']['sennas']=$emisor->sennas;
+                    if($emisor->telefono!='')
+                    {
+                        $payload['receptor']['telefono']['cod_pais']='506';
+                        $payload['receptor']['telefono']['numero']=$emisor->telefono;
+                    }
+
+                    if($emisor->fax!='')
+                    {
+                        $payload['receptor']['fax']['cod_pais']='506';
+                        $payload['receptor']['fax']['numero']=$emisor->fax;
+                    }
+                    $payload['receptor']['correo_electronico']=$emisor->correo_electronico;
                 }
                 else{
-                    $payload['emisor']['ubicacion']['barrio']=$emisor->barrio;
-                }
-                $payload['emisor']['ubicacion']['sennas']=$emisor->sennas;
-                if($emisor->telefono!='')
-                {
-                    $payload['emisor']['telefono']['cod_pais']='506';
-                    $payload['emisor']['telefono']['numero']=$emisor->telefono;
-                }
+                    $payload['emisor']['nombre']=$emisor->razon_social;
+                    $payload['emisor']['identificacion']['tipo']=$emisor->id_tpidentificacion;
+                    $payload['emisor']['identificacion']['numero']=$emisor->id;
+                    $payload['emisor']['nombre_comercial']=$emisor->nombre_comercial;
+                    $payload['emisor']['ubicacion']['provincia']=$emisor->provincia;
+                    $payload['emisor']['ubicacion']['canton']=$emisor->canton;
+                    $payload['emisor']['ubicacion']['distrito']=$emisor->distrito;
+                    if($emisor->barrio=='00' OR $emisor->barrio=='')
+                    {
+                        $payload['emisor']['ubicacion']['barrio']='01';
+                    }
+                    else{
+                        $payload['emisor']['ubicacion']['barrio']=$emisor->barrio;
+                    }
+                    $payload['emisor']['ubicacion']['sennas']=$emisor->sennas;
+                    if($emisor->telefono!='')
+                    {
+                        $payload['emisor']['telefono']['cod_pais']='506';
+                        $payload['emisor']['telefono']['numero']=$emisor->telefono;
+                    }
 
-                if($emisor->fax!='')
-                {
-                    $payload['emisor']['fax']['cod_pais']='506';
-                    $payload['emisor']['fax']['numero']=$emisor->fax;
+                    if($emisor->fax!='')
+                    {
+                        $payload['emisor']['fax']['cod_pais']='506';
+                        $payload['emisor']['fax']['numero']=$emisor->fax;
+                    }
+                    $payload['emisor']['correo_electronico']=$emisor->correo_electronico;
                 }
-                $payload['emisor']['correo_electronico']=$emisor->correo_electronico;
 
                 if ($tipoComprobante == "01") {
                     return $this->makeFE($payload);

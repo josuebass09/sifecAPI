@@ -438,16 +438,12 @@ function getFormaPago($medioPago)
                         <th align="right" class="terceraTh" style="border-bottom: 1px solid #fff;"><?php echo number_format($xml_res['TotalComprobante'],2,'.',',');?></th>
                     </tr>
                 </table>
-    <br><br><br><br><br><br><br><br>
-
-
+    <br><br><br>
 
     <div style="text-align: center;font-size: 10px;">
-        <p>____________________________________________</p><h3 style="text-align: center;"><?php echo $data->Receptor->Nombre;?></h3>
+        <span style="font-weight: bold;">"Emitida conforme la resolución de facturación electrónica N° DGT-R-48-2016 del 07-10-2016 de la D.G.T.D."</span>
+        <br><span class="ft0">Versión 4.3</span>
     </div>
-    <!--<div style="text-align: center;font-size: 10px;">
-        <span style="font-weight: bold;">"Autorizada mediante resolución N° DGT-R-48-2016 del 07-10-2016"</span>
-    </div>-->
 
 </body>
 
