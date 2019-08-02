@@ -272,7 +272,10 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         $comprobante->nombre_receptor = $xmlObj->Receptor->Nombre;
         $comprobante->id_emisor=$xmlObj->Emisor->Identificacion->Numero;
         $comprobante->tp_comprobante=substr((string)$xmlObj->Clave, 29, 2);
-
+        if($comprobante->tp_comprobante=='08')
+        {
+            $comprobante->id_emisor='000000000';
+        }
         //$tipoComprobante = substr($payload['clave'], 29, 2);
         //$comprobante->json_recibido=$json_payload;
 
