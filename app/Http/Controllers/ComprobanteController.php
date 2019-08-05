@@ -17,6 +17,9 @@ use phpDocumentor\Reflection\Types\Float_;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Barryvdh\DomPDF\Facade as PDF;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class ComprobanteController extends Controller
 {
 
@@ -395,6 +398,164 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
         {
             echo $exception->getMessage();
         }
+    }
+    public function reporteIvaMensual(Request $request)
+    {
+        //require '../vendor/autoload.php';
+
+        $comprobante=null;
+        if(!isset($request['api_key']) OR empty($request['api_key']))
+        {
+            return response()->json(array("code"=>"3","data"=>"Requiere que se incluya el API KEY dentro de los parámetros para
+poder realizar el proceso."), 400);
+        }
+        if(!isset($request['entorno']) OR empty($request['entorno']))
+        {
+            return response()->json(array("code"=>"10","data"=>"Requiere que se incluya el entorno dentro de los parámetros del encabezado de la solicitud."), 400);
+        }
+        $payload=$request->json()->all();
+        if(!isset($request['id']) OR empty($request['id']))
+        {
+            return response()->json(array("code"=>"10","data"=>"Requiere que se incluya la cédula del obligado tributario para procesar la solicitud."), 400);
+        }
+        $id_cliente=$request['id'];
+        $fecha_inicio='2019-07-01 00:00:00';
+        $fecha_fin='2019-08-15 23:59:59';
+        $comprobante=DB::table('COMPROBANTES')->join('EMISORES', 'EMISORES.id', '=', 'COMPROBANTES.id_emisor') ->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.id_receptor')->where('COMPROBANTES.id_emisor','=','206860797')->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
+        if(!$comprobante)
+        {
+            return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto o el obligado tributario no ha emitido comprobantes","X-Api-Key"=>$request->header('X-Api-Key')), 401);
+        }
+
+        $reporte=array();
+        $cuenta=1;
+        $sumIva=0;
+        $sumTotal=0;
+        foreach ($comprobante as $c)
+        {
+            $cargaXml = simplexml_load_string(base64_decode($c->xml_firmado));
+            $toJson=json_encode($cargaXml);
+            $xml=json_decode($toJson);
+
+
+            $detalle_venta=array();
+            /*foreach ($xml->DetalleServicio->LineaDetalle as $d){
+
+            }*/
+            $moneda="CRC";
+            $tipo_cambio="";
+            $receptor="";
+            if(isset($c->id_receptor) AND $c->id_receptor!='')
+            {
+                $receptor=$c->id_receptor;
+            }
+            if(isset($xml->ResumenFactura->CodigoTipoMoneda->CodigoMoneda) AND $xml->ResumenFactura->CodigoTipoMoneda->CodigoMoneda!='')
+            {
+                $moneda=$xml->ResumenFactura->CodigoTipoMoneda->CodigoMoneda;
+            }
+            if(isset($xml->ResumenFactura->CodigoTipoMoneda->TipoCambio) AND $xml->ResumenFactura->CodigoTipoMoneda->TipoCambio!='')
+            {
+                $tipo_cambio=$xml->ResumenFactura->CodigoTipoMoneda->TipoCambio;
+            }
+            $r=array("Identificación"=>$xml->Emisor->Identificacion->Numero, "clave"=>$xml->Clave,"consecutivo"=>$xml->NumeroConsecutivo,"fecha"=>date('Y-m-d H:i:s', strtotime($xml->FechaEmision)),"Total Impuesto"=>$xml->ResumenFactura->TotalImpuesto,"Total Venta"=>$xml->ResumenFactura->TotalComprobante,"Moneda"=>$moneda,"Tipo cambio"=>$tipo_cambio,"estado"=>$c->estado,"receptor"=>$receptor);
+           array_push($reporte,$r);
+
+
+
+        }
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()->setCreator('Maarten Balliauw')->setTitle('Reporte Mensual IVA')
+            ->setSubject('Office 2007 XLSX Test Document');
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A2', 'Consecutivo')
+            ->setCellValue('B2', 'Fecha Emisión')
+            ->setCellValue('C2', 'Moneda')
+            ->setCellValue('D2', 'Tipo de Cambio')
+            ->setCellValue('E2', 'Total IVA')
+            ->setCellValue('F2', 'Total Venta')
+            ->setCellValue('G2', 'Receptor')
+            ->setCellValue('H2', 'Estado');
+// Miscellaneous glyphs, UTF-8
+
+// Rename worksheet
+        $spreadsheet->getActiveSheet()->setTitle('ReporteIVA');
+// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $spreadsheet->setActiveSheetIndex(0);
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(35);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('00ffff');
+        $spreadsheet->getActiveSheet()->getStyle("A1:H1")->getFont()->setSize(15);
+        $spreadsheet->getActiveSheet()->getStyle('A2:H2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('dedede');
+        $letras=array("A","B","C","D","E","F","G","H");
+        $tamVentas=sizeof($reporte);
+
+        for ($i=2;$i<$tamVentas;$i++)
+        {
+            if($i==2)
+            {
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1","Ventas");
+            }
+            else{
+                for ($j=2;$j<=sizeof($letras)+1;$j++)
+                {
+                    switch ($j)
+                    {
+                        case 2:$spreadsheet->setActiveSheetIndex(0)->setCellValue("A".$i, $reporte[$i]['consecutivo']);
+                            break;
+                        case 3:$spreadsheet->setActiveSheetIndex(0)->setCellValue("B".$i, $reporte[$i]['fecha']);
+                            break;
+                        case 4:$spreadsheet->setActiveSheetIndex(0)->setCellValue("C".$i, $reporte[$i]['Moneda']);
+                            break;
+                        case 5:$spreadsheet->setActiveSheetIndex(0)->setCellValue("D".$i, $reporte[$i]['Tipo cambio']);
+                            break;
+                        case 6:$spreadsheet->setActiveSheetIndex(0)->setCellValue("E".$i, $reporte[$i]['Total Impuesto']);
+                            if($reporte[$i]['estado']=="aceptado")
+                            {
+                                $sumIva+=floatval($reporte[$i]['Total Impuesto']);
+                            }
+                            break;
+                        case 7:$spreadsheet->setActiveSheetIndex(0)->setCellValue("F".$i, $reporte[$i]['Total Venta']);
+                            if($reporte[$i]['estado']=="aceptado")
+                            {
+                                $sumTotal+=floatval($reporte[$i]['Total Venta']);
+                            }
+                            break;
+                        case 8:$spreadsheet->setActiveSheetIndex(0)->setCellValue("G".$i, $reporte[$i]['receptor']);
+                            break;
+                        case 9:$spreadsheet->setActiveSheetIndex(0)->setCellValue("H".$i, $reporte[$i]['estado']);
+                            if($reporte[$i]['estado']=="aceptado")
+                            {
+                                $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('2aae2a');
+                            }
+                            else if($reporte[$i]['estado']=="rechazado")
+                            {
+                                $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('FF0000');
+                            }
+                            else if($reporte[$i]['estado']=="procesando" OR $reporte[$i]['estado']=="recibido")
+                            {
+                                $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('ADD8E6');
+                            }
+                            break;
+
+                    }
+                }
+            }
+        }
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue("E".$tamVentas,number_format($sumIva,5,'.',','));
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue("F".$tamVentas,number_format($sumTotal,5,'.',','));
+        $spreadsheet->getActiveSheet()->getStyle('E'.$tamVentas.':'.'E'.$tamVentas)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('98FB98');
+        $spreadsheet->getActiveSheet()->getStyle('F'.$tamVentas.':'.'F'.$tamVentas)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffffbf');
+        $writer = new Xlsx($spreadsheet);
+        $url="Reporte ".$id_cliente." ".str_replace("00:00:00","",$fecha_inicio)." al ".str_replace('23:59:59','',$fecha_fin) ." IVA.xlsx";
+        $writer->save($url);
+        return \response()->download($url)->deleteFileAfterSend(true);
+        //return response()->json(array("code"=>"1","data"=>$comprobante, 200));
     }
     public function makeInvoice($clave)
     {

@@ -112,6 +112,9 @@ Route::get('/easypos', array('as' => 'easypos',
 //Ruta para descargar el PDF
 Route::get('/api/downloadReceipt', array('as' => 'downloadReceipt',
     'uses' => 'ComprobanteController@downloadPdfInvoice'));
+Route::get('/api/downloadIvaMensual', array('as' => '/api/downloadIvaMensual',
+    'uses' => 'ComprobanteController@reporteIvaMensual'));
+
 
 
 
