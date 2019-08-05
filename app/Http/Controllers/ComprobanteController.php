@@ -445,6 +445,7 @@ poder realizar el proceso."), 400);
             $moneda="CRC";
             $tipo_cambio="";
             $receptor="";
+            $totalImpuesto=0;
             if(isset($c->id_receptor) AND $c->id_receptor!='')
             {
                 $receptor=$c->id_receptor;
@@ -457,7 +458,12 @@ poder realizar el proceso."), 400);
             {
                 $tipo_cambio=$xml->ResumenFactura->CodigoTipoMoneda->TipoCambio;
             }
-            $r=array("Identificación"=>$xml->Emisor->Identificacion->Numero, "clave"=>$xml->Clave,"consecutivo"=>$xml->NumeroConsecutivo,"fecha"=>date('Y-m-d H:i:s', strtotime($xml->FechaEmision)),"Total Impuesto"=>$xml->ResumenFactura->TotalImpuesto,"Total Venta"=>$xml->ResumenFactura->TotalComprobante,"Moneda"=>$moneda,"Tipo cambio"=>$tipo_cambio,"estado"=>$c->estado,"receptor"=>$receptor);
+            if(isset($xml->ResumenFactura->TotalImpuesto) AND $xml->ResumenFactura->TotalImpuesto!='')
+            {
+                $totalImpuesto=$xml->ResumenFactura->TotalImpuesto;
+            }
+
+            $r=array("Identificación"=>$xml->Emisor->Identificacion->Numero, "clave"=>$xml->Clave,"consecutivo"=>$xml->NumeroConsecutivo,"fecha"=>date('Y-m-d H:i:s', strtotime($xml->FechaEmision)),"Total Impuesto"=>$totalImpuesto,"Total Venta"=>$xml->ResumenFactura->TotalComprobante,"Moneda"=>$moneda,"Tipo cambio"=>$tipo_cambio,"estado"=>$c->estado,"receptor"=>$receptor);
            array_push($reporte,$r);
 
 
