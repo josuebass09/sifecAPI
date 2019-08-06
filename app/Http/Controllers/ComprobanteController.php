@@ -622,30 +622,36 @@ poder realizar el proceso."), 400);
         $METODO=env('SMTP_METODO');
         $PUERTO=env('SMTP_PUERTO');
         $correos_cc=array();
+        $tp_comprobante="";
         if ($email->getTipoComprobante()==1)
         {
             $nombre_archivo1 =  storage_path('app/temp_xml/ATV_FAC_Firmada-'.$email->getClave().'.xml');
             $nombre_archivo2 = storage_path('app/temp_xml/ATV_FAC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="FE emitida por";
         }
         elseif ($email->getTipoComprobante()==2)
         {
             $nombre_archivo1 = storage_path('app/temp_xml/ATV_ND_Firmada-'.$email->getClave().'.xml');
             $nombre_archivo2 = storage_path('app/temp_xml/ATV_ND_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="ND emitida por";
         }
         elseif ($email->getTipoComprobante()==3)
         {
             $nombre_archivo1 = storage_path('app/temp_xml/ATV_NC_Firmada-'.$email->getClave().'.xml');
             $nombre_archivo2 = storage_path('app/temp_xml/ATV_NC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="NC emitida por";
         }
         elseif ($email->getTipoComprobante()==4)
         {
             $nombre_archivo1 = storage_path('app/temp_xml/ATV_TE_Firmada-'.$email->getClave().'.xml');
             $nombre_archivo2 = storage_path('app/temp_xml/ATV_TE_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="TE emitido por";
         }
         elseif ($email->getTipoComprobante()==8)
         {
             $nombre_archivo1 = storage_path('app/temp_xml/ATV_FEC_Firmada-'.$email->getClave().'.xml');
             $nombre_archivo2 = storage_path('app/temp_xml/ATV_FEC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="FEC emitida por";
         }
 
         if ($archivo1 = fopen($nombre_archivo1, "a"))
@@ -660,12 +666,12 @@ poder realizar el proceso."), 400);
 
         //Load Composer's autoloader
         require '../vendor/autoload.php';
-        $sub_ject="Documentos Hacienda de ".$email->getNombreEmi();
+        $sub_ject=$tp_comprobante." ".$email->getNombreEmi();
         date_default_timezone_set('America/Costa_Rica');
         $n_comercial=$email->getNComercial();
         if(isset($n_comercial) AND $email->getNComercial()!='')
         {
-            $sub_ject="Documentos Hacienda de ".$n_comercial;
+            $sub_ject=$tp_comprobante." ".$n_comercial;
         }
         if($smtp_opcional)
         {
