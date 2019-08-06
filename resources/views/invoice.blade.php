@@ -350,7 +350,7 @@ function getFormaPago($medioPago)
 
 
 </table>
-<table  width="100%" style="font-size: 12px;float: right;" id="tabla_resumen">
+<table  width="100%" style="font-size: 12px;" id="tabla_resumen">
                     <tr>
                         <th class="segundaTh">Total Servicios Gravados</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalServGravados'])){ echo number_format($xml_res['TotalServGravados'],2,'.',',');}else{ echo "0.00";}?></th>
@@ -431,7 +431,7 @@ function getFormaPago($medioPago)
                     </tr>
                 </table>
     <br><br>
-<table width="100%" style="font-size: 12px;float: left;" id="tabla_observaciones">
+<table width="100%" style="font-size: 12px;" id="tabla_observaciones">
 
     <tr>
         <th class="primeraTh">Observaciones</th>
