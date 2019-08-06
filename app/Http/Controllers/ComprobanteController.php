@@ -558,9 +558,9 @@ poder realizar el proceso."), 400);
         $spreadsheet->getActiveSheet()->getStyle('E'.$tamVentas.':'.'E'.$tamVentas)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('98FB98');
         $spreadsheet->getActiveSheet()->getStyle('F'.$tamVentas.':'.'F'.$tamVentas)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffffbf');
         $writer = new Xlsx($spreadsheet);
-        $url=storage_path('app/temp_pdf'). "Reporte ".$id_cliente." ".str_replace("00:00:00","",$fecha_inicio)." al ".str_replace('23:59:59','',$fecha_fin) ." IVA.xlsx";
-        $writer->save($url);
-        return \response()->download($url)->deleteFileAfterSend(true);
+        $nombre="Reporte ".$id_cliente." ".str_replace("00:00:00","",$fecha_inicio)." al ".str_replace('23:59:59','',$fecha_fin) ." IVA.xlsx";
+        $writer->save(storage_path('app/public').$nombre);
+        return \response()->download(storage_path('app/public').$nombre,$nombre)->deleteFileAfterSend(true);
         //return response()->json(array("code"=>"1","data"=>$comprobante, 200));
     }
     public function makeInvoice($clave)
