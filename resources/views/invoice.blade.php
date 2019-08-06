@@ -12,6 +12,9 @@ if ($tipoComprobante == "01") {
 } elseif ($tipoComprobante == "04") {
     $comprobante="Tiquete Electrónico";
 }
+elseif ($tipoComprobante == "08") {
+    $comprobante="Factura Electrónica de Compra";
+}
 $nombre_comercial="";
 if(!empty((array)$data->Emisor->NombreComercial))
 {
