@@ -350,18 +350,7 @@ function getFormaPago($medioPago)
 
 
 </table>
-<table width="50%" style="font-size: 12px;float: left;" id="tabla_observaciones">
-
-                    <tr>
-                        <th class="primeraTh">Observaciones</th>
-
-                    </tr>
-                    <tr>
-                        <td class="primeraTh" style="text-align: left;"><?php if(!empty($data->Otros->OtroTexto)){ echo $data->Otros->OtroTexto;}?></td>
-                    </tr>
-                </table>
-
-            <table  width="50%" style="font-size: 12px;float: right;" id="tabla_resumen">
+<table  width="100%" style="font-size: 12px;float: right;" id="tabla_resumen">
                     <tr>
                         <th class="segundaTh">Total Servicios Gravados</th>
                         <th align="right" class="terceraTh"><?php if(!empty($xml_res['TotalServGravados'])){ echo number_format($xml_res['TotalServGravados'],2,'.',',');}else{ echo "0.00";}?></th>
@@ -441,8 +430,18 @@ function getFormaPago($medioPago)
                         <th align="right" class="terceraTh" style="border-bottom: 1px solid #fff;"><?php echo number_format($xml_res['TotalComprobante'],2,'.',',');?></th>
                     </tr>
                 </table>
-    <br><br><br>
+    <br><br>
+<table width="100%" style="font-size: 12px;float: left;" id="tabla_observaciones">
 
+    <tr>
+        <th class="primeraTh">Observaciones</th>
+
+    </tr>
+    <tr>
+        <td class="primeraTh" style="text-align: left;"><?php if(!empty($data->Otros->OtroTexto)){ echo $data->Otros->OtroTexto;}?></td>
+    </tr>
+</table>
+<br><br>
     <div style="text-align: center;font-size: 10px;">
         <span style="font-weight: bold;">"Emitida conforme la resolución de facturación electrónica N° DGT-R-48-2016 del 07-10-2016 de la D.G.T.D."</span>
         <br><span class="ft0">Versión 4.3</span>
