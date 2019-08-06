@@ -149,7 +149,7 @@ function getFormaPago($medioPago)
         }
 
         #tabla_resumen {
-            width: 50%;
+            width: 100%;
             border-collapse: inherit;
             border-spacing: 0;
 
