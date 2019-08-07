@@ -418,9 +418,20 @@ poder realizar el proceso."), 400);
         {
             return response()->json(array("code"=>"10","data"=>"Requiere que se incluya la cédula del obligado tributario para procesar la solicitud."), 400);
         }
+        if(!isset($request['f_inicio']) OR $request['f_inicio']=='')
+        {
+            return response()->json(array("code"=>"10","data"=>"Requiere que se incluya la fecha de inicio para descargar el reporte."), 400);
+        }
+        if(!isset($request['f_fin']) OR $request['f_fin']=='')
+        {
+            return response()->json(array("code"=>"10","data"=>"Requiere que se incluya la fecha fin para descargar el reporte."), 400);
+        }
         $id_cliente=$request['id'];
-        $fecha_inicio='2019-07-01 00:00:00';
-        $fecha_fin='2019-08-15 23:59:59';
+        /*$fecha_inicio='2019-07-01 00:00:00';
+        $fecha_fin='2019-08-15 23:59:59';*/
+
+        $fecha_inicio=str_replace('.','-',$request['f_inicio'])." 00:00:00";
+        $fecha_fin=str_replace('.','-',$request['f_fin'])." 23:59:59";
         $comprobante=DB::table('COMPROBANTES')->join('EMISORES', 'EMISORES.id', '=', 'COMPROBANTES.id_emisor') ->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.id_receptor')->where('COMPROBANTES.id_emisor','=','206860797')->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
         if(!$comprobante)
         {
