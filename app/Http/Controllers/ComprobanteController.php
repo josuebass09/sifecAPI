@@ -435,7 +435,7 @@ poder realizar el proceso."), 400);
         $fecha_fin=str_replace('/','-',$request['f_fin'])." 23:59:59";
         $fecha_fin = date("Y-m-d", strtotime($fecha_fin));
 
-        $comprobante=DB::table('COMPROBANTES')->join('EMISORES', 'EMISORES.id', '=', 'COMPROBANTES.id_emisor') ->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.id_receptor')->where('COMPROBANTES.id_emisor','=',$request['id'])->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
+        $comprobante=DB::table('COMPROBANTES')->join('EMISORES', 'EMISORES.id', '=', 'COMPROBANTES.id_emisor') ->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.id_receptor')->where('COMPROBANTES.id_emisor','=',$id_cliente)->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
         if(!$comprobante)
         {
             return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto o el obligado tributario no ha emitido comprobantes","X-Api-Key"=>$request->header('X-Api-Key')), 401);
