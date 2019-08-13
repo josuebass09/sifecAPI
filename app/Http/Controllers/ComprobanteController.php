@@ -435,8 +435,6 @@ poder realizar el proceso."), 400);
         $fecha_fin=str_replace('00:00:00','',$fecha_fin)." 23:59:59";
 
         $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.nombre_receptor')->where('COMPROBANTES.id_emisor','=',$id_cliente)->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
-        dd($comprobante);
-        exit;
         if(!$comprobante)
         {
             return response()->json(array("code"=>"4","data"=>"Fallo en el proceso de autentificación por un API KEY incorrecto o el obligado tributario no ha emitido comprobantes","X-Api-Key"=>$request->header('X-Api-Key')), 401);
@@ -461,9 +459,9 @@ poder realizar el proceso."), 400);
             $tipo_cambio="";
             $receptor="";
             $totalImpuesto=0;
-            if(isset($c->id_receptor) AND $c->id_receptor!='')
+            if(isset($c->nombre_receptor) AND $c->nombre_receptor!='')
             {
-                $receptor=$c->id_receptor;
+                $receptor=$c->nombre_receptor;
             }
             if(isset($xml->ResumenFactura->CodigoTipoMoneda->CodigoMoneda) AND $xml->ResumenFactura->CodigoTipoMoneda->CodigoMoneda!='')
             {
