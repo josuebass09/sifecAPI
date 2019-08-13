@@ -483,8 +483,7 @@ poder realizar el proceso."), 400);
 
 
         }
-        dd($reporte);
-        exit;
+
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreator('Maarten Balliauw')->setTitle('Reporte Mensual IVA')
             ->setSubject('Office 2007 XLSX Test Document');
