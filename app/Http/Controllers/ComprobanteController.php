@@ -434,7 +434,7 @@ poder realizar el proceso."), 400);
         $fecha_fin=str_replace('/','-',$request['f_fin']);
         $fecha_fin=str_replace('00:00:00','',$fecha_fin)." 23:59:59";
 
-        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.id_receptor')->where('COMPROBANTES.id_emisor','=',$id_cliente)->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
+        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.estado','COMPROBANTES.nombre_receptor')->where('COMPROBANTES.id_emisor','=',$id_cliente)->whereDate('fecha_emision','>',$fecha_inicio)->whereDate('fecha_emision','<=',$fecha_fin)->get();
         dd($comprobante);
         exit;
         if(!$comprobante)
