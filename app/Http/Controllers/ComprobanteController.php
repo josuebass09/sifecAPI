@@ -523,7 +523,7 @@ poder realizar el proceso."), 400);
                 $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1","Ventas");
             }
             else{
-                for ($j=2;$j<=sizeof($letras)+1;$j++)
+                for ($j=2;$j<=sizeof($letras)+2;$j++)
                 {
                     switch ($j)
                     {
