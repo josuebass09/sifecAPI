@@ -457,7 +457,7 @@ poder realizar el proceso."), 400);
             }*/
             $moneda="CRC";
             $tipo_cambio="";
-            $receptor="";
+            $receptor="SIN RECEPTOR";
             $totalImpuesto=0;
             if(isset($c->nombre_receptor) AND $c->nombre_receptor!='')
             {
