@@ -15,7 +15,7 @@ $sumTotal=0;
     <!--<h2 style="background-color: #00C851;width: 100%;">Ventas</h2>-->
     <table class="table table-bordered table-striped table-hover" width="100">
         <tr bgcolor="#008b8b" style="font-size: 16px;"><th colspan="8">Ventas</th></tr>
-        <tr>
+        <tr bgcolor="silver">
             <th>Consecutivo</th>
             <!--<th width="100">Fecha Emisión</th>-->
             <th>Moneda</th>
@@ -39,6 +39,8 @@ $sumTotal=0;
                 <td bgcolor="#228b22">
                     {{$da['estado']}}
                 </td>
+                {{ $sumIva+=floatval($da['Total Impuesto'])}}
+                {{ $sumTotal+=floatval($da['Total Venta'])}}
                 @endif
             @if($da['estado']=='rechazado')
 
@@ -53,15 +55,14 @@ $sumTotal=0;
                 </td>
             @endif
         </tr>
-        {{ $sumIva+=floatval($da['Total Impuesto'])}}
-        {{ $sumTotal+=floatval($da['Total Venta'])}}
+
         @endforeach
 
     <tfoot>
     <tr>
         <th colspan="5"></th>
-        <th>Total IVA</th>
-        <th>Total General</th>
+        <th bgcolor="silver">Total IVA</th>
+        <th bgcolor="silver">Total General</th>
     </tr>
     <tr>
         <td colspan="5"></td>

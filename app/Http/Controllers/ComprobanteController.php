@@ -473,7 +473,8 @@ poder realizar el proceso."), 400);
 
 
         }
-        $this->makeIvaReport($reporte);
+        $url_reporte=$this->makeIvaReport($reporte);
+        return \response()->download($url_reporte)->deleteFileAfterSend(true);
     }
     public function makeIvaReport($datos)
     {
