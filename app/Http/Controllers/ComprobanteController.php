@@ -477,11 +477,14 @@ poder realizar el proceso."), 400);
             }
 
             $r=array("Identificación"=>$xml->Emisor->Identificacion->Numero, "clave"=>$xml->Clave,"consecutivo"=>$xml->NumeroConsecutivo,"fecha"=>date('Y-m-d H:i:s', strtotime($xml->FechaEmision)),"Total Impuesto"=>$totalImpuesto,"Total Venta"=>$xml->ResumenFactura->TotalComprobante,"Moneda"=>$moneda,"Tipo cambio"=>$tipo_cambio,"estado"=>$c->estado,"receptor"=>$receptor);
+
            array_push($reporte,$r);
 
 
 
         }
+        dd($reporte);
+        exit;
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreator('Maarten Balliauw')->setTitle('Reporte Mensual IVA')
             ->setSubject('Office 2007 XLSX Test Document');
