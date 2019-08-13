@@ -516,14 +516,9 @@ poder realizar el proceso."), 400);
         $letras=array("A","B","C","D","E","F","G","H");
         $tamVentas=sizeof($reporte);
 
-        for ($i=2;$i<$tamVentas;$i++)
+        for ($i=1;$i<=$tamVentas;$i++)
         {
-            if($i==2)
-            {
-                $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1","Ventas");
-            }
-            else{
-                for ($j=2;$j<=sizeof($letras)+2;$j++)
+            for ($j=1;$j<=sizeof($letras);$j++)
                 {
                     switch ($j)
                     {
@@ -566,7 +561,6 @@ poder realizar el proceso."), 400);
 
                     }
                 }
-            }
         }
         $spreadsheet->setActiveSheetIndex(0)->setCellValue("E".$tamVentas,number_format($sumIva,5,'.',','));
         $spreadsheet->setActiveSheetIndex(0)->setCellValue("F".$tamVentas,number_format($sumTotal,5,'.',','));
