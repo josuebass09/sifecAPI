@@ -522,29 +522,29 @@ poder realizar el proceso."), 400);
                 {
                     switch ($j)
                     {
-                        case 2:$spreadsheet->setActiveSheetIndex(0)->setCellValue("A".$i, $reporte[$i]['consecutivo']);
+                        case 1:$spreadsheet->setActiveSheetIndex(0)->setCellValue("A".$i, $reporte[$i]['consecutivo']);
                             break;
-                        case 3:$spreadsheet->setActiveSheetIndex(0)->setCellValue("B".$i, $reporte[$i]['fecha']);
+                        case 2:$spreadsheet->setActiveSheetIndex(0)->setCellValue("B".$i, $reporte[$i]['fecha']);
                             break;
-                        case 4:$spreadsheet->setActiveSheetIndex(0)->setCellValue("C".$i, $reporte[$i]['Moneda']);
+                        case 3:$spreadsheet->setActiveSheetIndex(0)->setCellValue("C".$i, $reporte[$i]['Moneda']);
                             break;
-                        case 5:$spreadsheet->setActiveSheetIndex(0)->setCellValue("D".$i, $reporte[$i]['Tipo cambio']);
+                        case 4:$spreadsheet->setActiveSheetIndex(0)->setCellValue("D".$i, $reporte[$i]['Tipo cambio']);
                             break;
-                        case 6:$spreadsheet->setActiveSheetIndex(0)->setCellValue("E".$i, $reporte[$i]['Total Impuesto']);
+                        case 5:$spreadsheet->setActiveSheetIndex(0)->setCellValue("E".$i, $reporte[$i]['Total Impuesto']);
                             if($reporte[$i]['estado']=="aceptado")
                             {
                                 $sumIva+=floatval($reporte[$i]['Total Impuesto']);
                             }
                             break;
-                        case 7:$spreadsheet->setActiveSheetIndex(0)->setCellValue("F".$i, $reporte[$i]['Total Venta']);
+                        case 6:$spreadsheet->setActiveSheetIndex(0)->setCellValue("F".$i, $reporte[$i]['Total Venta']);
                             if($reporte[$i]['estado']=="aceptado")
                             {
                                 $sumTotal+=floatval($reporte[$i]['Total Venta']);
                             }
                             break;
-                        case 8:$spreadsheet->setActiveSheetIndex(0)->setCellValue("G".$i, $reporte[$i]['receptor']);
+                        case 7:$spreadsheet->setActiveSheetIndex(0)->setCellValue("G".$i, $reporte[$i]['receptor']);
                             break;
-                        case 9:$spreadsheet->setActiveSheetIndex(0)->setCellValue("H".$i, $reporte[$i]['estado']);
+                        case 8:$spreadsheet->setActiveSheetIndex(0)->setCellValue("H".$i, $reporte[$i]['estado']);
                             if($reporte[$i]['estado']=="aceptado")
                             {
                                 $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_LIGHTGRID)->getStartColor()->setARGB('2aae2a');
