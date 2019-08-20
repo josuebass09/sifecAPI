@@ -473,16 +473,62 @@ poder realizar el proceso."), 400);
 
 
         }
+        //$gastos = DB::table('GASTOS')->select('GASTOS.id_receptor', 'GASTOS.xml_completo', 'COMPROBANTES.estado')->where('GASTOS.id_receptor', '=', $id_cliente)->whereDate('fecha_emision', '>', $fecha_inicio)->whereDate('fecha_emision', '<=', $fecha_fin)->get();
+        $gastos = DB::table('GASTOS')->select('GASTOS.id_receptor', 'GASTOS.xml_completo', 'GASTOS.estado','GASTOS.total_acred','GASTOS.total_apli','GASTOS.location','GASTOS.consecutivo_recepcion','GASTOS.total_impuestos','GASTOS.total_comprobante','GASTOS.identificacion_emisor')->where('GASTOS.id_receptor', '=', $id_cliente)->where('GASTOS.location','NOT LIKE','%sandbox%') ->get();
+        $sumAcreditado=0;
+        $sumAplicable=0;
+        if (!$gastos) {
+            return response()->json(array("code" => "4", "data" => "Fallo en el proceso de autentificación por un API KEY incorrecto o el obligado tributario no ha emitido comprobantes", "X-Api-Key" => $request->header('X-Api-Key')), 401);
+        }
+        /*foreach ($gastos as $g)
+        {
+            if($g->location!='')
+            {
+                $sumAcreditado+=floatval($g->total_acred);
+                $sumAplicable+=floatval($g->total_apli);
+            }
+
+        }*/
+
         $url_reporte=$this->makeIvaReport($reporte);
-        return \response()->download($url_reporte)->deleteFileAfterSend(true);
+        $url_gasto=$this->makeIvaReportGastos($gastos);
+        //return \response()->download($url_reporte)->deleteFileAfterSend(true);
     }
     public function makeIvaReport($datos)
     {
 
         try{
-            $comprobante="Reporte Mensual IVA";
+            $comprobante="Reporte Mensual IVA de Ventas";
 
             $view =  \View::make('reportes/iva_mensual', compact('datos', 'datos', 'iva_mensual'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->save('../storage/app/temp_pdf/'.$comprobante.'.pdf');
+            return '../storage/app/temp_pdf/'.$comprobante.'.pdf';
+            //$pdf->loadHTML($view);
+
+            //return $pdf->stream('whateveryourviewname.pdf');
+            //return "ok";
+            //return $pdf->download('facturilla.pdf');
+            //return $pdf->stream('invoice.pdf');
+            //return $pdf->download('invoice.pdf');
+            //return $pdf->output();
+            //$pdf = PDF::loadView('invoice', $data);
+            //$pdf->download('invoice.pdf');
+
+        }
+        catch (Exception $e)
+        {
+            return $e->getMessage();
+        }
+
+        //return $pdf->stream('invoice');
+    }
+    public function makeIvaReportGastos($datos)
+    {
+        try{
+            $comprobante="Reporte Mensual IVA de Gastos";
+
+            $view =  \View::make('reportes/iva_mensual_gastos', compact('datos', 'datos', 'iva_mensual_gastos'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->save('../storage/app/temp_pdf/'.$comprobante.'.pdf');
             return '../storage/app/temp_pdf/'.$comprobante.'.pdf';
@@ -5430,7 +5476,7 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                     return response()->json(array("code"=>"0","msj"=>"Estado ATV no disponible","data"=>$resposeText,"fecha"=>$fecha), 200);
                 }
                 $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.nombre_receptor','COMPROBANTES.email_receptor','COMPROBANTES.tp_comprobante','COMPROBANTES.numeracion','COMPROBANTES.cc')->where('clave','=',$payload['clave'])->first();
-                if(isset($resposeText->estado) AND $resposeText->estado==="aceptado" AND isset($comprobante->email_receptor) AND $comprobante->email_receptor!='' AND $comprobante->tp_comprobante=='01' OR $comprobante->tp_comprobante=='02' OR $comprobante->tp_comprobante=='03' OR $comprobante->tp_comprobante=='08')
+                if(isset($resposeText->estado) AND $resposeText->estado==="aceptado" AND isset($comprobante->email_receptor) AND $comprobante->email_receptor!='')
                 {
                     $email = new Email(base64_decode($comprobante->xml_firmado), base64_decode($resposeText->resultXml), $payload['clave'], $comprobante->email_receptor, $comprobante->nombre_receptor, (int)str_replace('0', '', $comprobante->tp_comprobante), $emisor->razon_social, $comprobante->numeracion, $emisor->nombre_comercial);
                     $this->sendEmail($email,$emisor->SMTP_OP,$api_key,$emisor->PDF,$comprobante->cc);
