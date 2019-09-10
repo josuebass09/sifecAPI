@@ -673,7 +673,7 @@ poder realizar el proceso."), 400);
 
         $mail = new PHPMailer(TRUE);
         try {
-            $mail->SMTPDebug = 0;                                 // Enable verbose debug output
+            $mail->SMTPDebug = 3;                                 // Enable verbose debug output
             $mail->isSMTP();                                      // Set mailer to use SMTP
             $mail->Host = $HOST;  // Specify main and backup SMTP servers
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
