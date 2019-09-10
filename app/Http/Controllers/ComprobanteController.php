@@ -715,7 +715,8 @@ poder realizar el proceso."), 400);
             $mail->send();
             // echo 'Message has been sent';
         } catch (Exception $e) {
-            echo $mail->ErrorInfo;
+            echo json_encode(array("php_mailer_exception"=>$mail->ErrorInfo));
+            exit;
             //echo "Error";
         }
         unlink($nombre_archivo1);
