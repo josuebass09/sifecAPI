@@ -681,6 +681,13 @@ poder realizar el proceso."), 400);
             $mail->Password = $PASSWORD;                           // SMTP password
             $mail->SMTPSecure = $METODO;                            // Enable TLS encryption, `ssl` also accepted
             $mail->Port = $PUERTO;                                    // TCP port to connect to
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
             $mail->setFrom($USERNAME,$email->getNombreEmi());
             $mail->addAddress($email->getEmailReceptor(), $email->getNombreReceptor());     // JOE User sería el nombre del receptor
             //$mail->addAddress('eliope_alb@yahoo.com');               // Name is optional
