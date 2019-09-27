@@ -15,6 +15,9 @@ if ($tipoComprobante == "01") {
 elseif ($tipoComprobante == "08") {
     $comprobante="Factura Electrónica de Compra";
 }
+elseif ($tipoComprobante == "09") {
+    $comprobante="Factura Electrónica de Exportación";
+}
 $nombre_comercial="";
 if(!empty((array)$data->Emisor->NombreComercial))
 {
@@ -202,7 +205,7 @@ function getFormaPago($medioPago)
 <table width="100%">
 <tr>
     <td style=" color: #000000;font-size:12px;">
-        <span style="font-size: 12px;"><strong>Cliente: </strong><span> <?php echo $data->Receptor->Nombre; ?></span></span>
+        <span style="font-size: 12px;"><strong>Cliente: </strong><span> <?php if(isset($data->Receptor->Nombre)){ echo $data->Receptor->Nombre;}else{ echo " ";} ?></span></span>
     </td>
 
     <td style="width: 75%; color: #000000;font-size:14px;text-align:right;">
@@ -213,7 +216,12 @@ function getFormaPago($medioPago)
 <tr>
 
     <td style="width: 75%; color: #000000;font-size:14px;text-align:left;line-height: 30px;">
-        <span style="font-size: 12px;"><strong>Identificación: </strong><span><?php echo $data->Receptor->Identificacion->Numero;?> </span></span>
+        <span style="font-size: 12px;"><strong>Identificación: </strong><?php
+                if(isset($data->Receptor->Identificacion->Numero) AND $data->Receptor->Identificacion->Numero!=''){ echo $data->Receptor->Identificacion->Numero;}
+                elseif(isset($data->Receptor->IdentificacionExtranjero) AND $data->Receptor->IdentificacionExtranjero!=''){
+                    echo $data->Receptor->IdentificacionExtranjero;
+                }
+                else{ echo "<span></span>";};?></span>
     </td>
     <td style="width: 75%; color: #000000;font-size:14px;text-align:right;line-height: 30px;">
         <span style="font-size: 12px;"><strong>Tipo de Factura: </strong><span><?php echo getCondicionVenta($data->CondicionVenta); ?> </span></span>
@@ -223,7 +231,7 @@ function getFormaPago($medioPago)
 <tr style="margin-top: 0px;">
 
     <td style="width: 75%; color: #000000;font-size:14px;text-align:left;line-height: 20px;">
-        <span style="font-size: 12px;"><strong>Correo Electrónico: </strong><span> <?php echo $data->Receptor->CorreoElectronico?></span></span>
+        <span style="font-size: 12px;"><strong>Correo Electrónico: </strong><span> <?php if(isset($data->Receptor->CorreoElectronico)){echo $data->Receptor->CorreoElectronico;}else{ echo " ";}?></span></span>
     </td>
     <td style="width: 75%; color: #000000;font-size:14px;text-align:right;line-height: 20px;">
         <?php if(isset($data->PlazoCredito) AND $data->PlazoCredito!='0' AND $data->PlazoCredito!='')
@@ -239,7 +247,7 @@ function getFormaPago($medioPago)
 <tr style="margin-top: 0px;">
 
     <td style="width: 75%; color: #000000;font-size:12px;text-align:left;line-height: 25px;">
-        <span style="font-size: 12px;"><strong>Teléfono: </strong><span><?php if(isset($data->Receptor->Telefono->NumTelefono) AND $data->Receptor->Telefono->NumTelefono!=''){ echo $data->Receptor->Telefono->NumTelefono;} ?> </span></span>
+        <span style="font-size: 12px;"><strong>Teléfono: </strong><span><?php if(isset($data->Receptor->Telefono->NumTelefono) AND $data->Receptor->Telefono->NumTelefono!=''){ echo $data->Receptor->Telefono->NumTelefono;}else{ echo " ";} ?> </span></span>
     </td>
     <td style="width: 75%; color: #000000;font-size:14px;text-align:right;line-height: 25px;">
         <span style="font-size: 12px;"><strong>Forma de Pago:</strong><span> <?php echo getFormaPago($data->MedioPago);?></span></span>
