@@ -717,7 +717,7 @@ poder realizar el proceso."), 400);
             }
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = $sub_ject;
-            $mail->Body = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><p>Adjunto a este correo encontrará el comprobante electrónico en formato XML y su correspondiente visualización en formato PDF, por concepto de facturación de '.$email->getNombreEmi().'. Lo anterior con base en las especificaciones del Ministerio de Hacienda. 
+            $mail->Body = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><p>Adjunto a este correo encontrará el comprobante electrónico en formato XML y su correspondiente visualización en formato PDF, por concepto de facturación de '.$email->getNombreEmi().'. Lo anterior con base en las especificaciones del Ministerio de Hacienda.
 <br>Por favor NO responder este mensaje.</p></body></html>';
             $mail->send();
             // echo 'Message has been sent';
@@ -1996,6 +1996,14 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             $xmlString .= '<CorreoElectronico>' . $payload['receptor']['correo_electronico'] . '</CorreoElectronico>';
             $xmlString .= '</Receptor>';
 
+        }
+        if(isset($payload['encabezado']['IdentificacionExtranjero']) AND $payload['encabezado']['IdentificacionExtranjero']!='')
+        {
+            $xmlString .='<IdentificacionExtranjero>'.$payload['encabezado']['IdentificacionExtranjero'].'</IdentificacionExtranjero>';
+        }
+        if(isset($payload['encabezado']['OtrasSenasExtranjero']) AND $payload['encabezado']['OtrasSenasExtranjero']!='')
+        {
+            $xmlString.='<OtrasSenasExtranjero>'.$payload['encabezado']['OtrasSenasExtranjero'].'</OtrasSenasExtranjero>';
         }
         if(!isset($payload['encabezado']['condicion_venta']) OR $payload['encabezado']['condicion_venta']=='')
         {
