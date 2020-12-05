@@ -1376,6 +1376,13 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                 }
                     $xmlString.= '</CodigoComercial>';
             }
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
+            }
             if(!isset($d['cantidad']) OR $d['cantidad']=='')
             {
                 return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. La [cantidad] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
