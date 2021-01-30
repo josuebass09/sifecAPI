@@ -1358,6 +1358,15 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                 $xmlString .= '<LineaDetalle>
                   <NumeroLinea>' . $d['numero'] . '</NumeroLinea>';
             }
+
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
+            }
+
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
 
@@ -1375,13 +1384,6 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                     $xmlString.='<Codigo>'.$d['codigoComercial']['codigo']   .'</Codigo>';
                 }
                     $xmlString.= '</CodigoComercial>';
-            }
-            if(!isset($d['codigo']) OR $d['codigo']=='')
-            {
-                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
-            }
-            else{
-                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
             }
             if(!isset($d['cantidad']) OR $d['cantidad']=='')
             {
@@ -2062,6 +2064,13 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<LineaDetalle>
                   <NumeroLinea>' . $d['numero'] . '</NumeroLinea>';
+            }
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
             }
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
@@ -2772,6 +2781,14 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                     }
                 }
             }
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
+            }
+
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
 
@@ -3548,6 +3565,13 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                     }
                 }
             }
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
+            }
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
 
@@ -4303,6 +4327,13 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
                 $xmlString .= '<LineaDetalle>
                   <NumeroLinea>' . $d['numero'] . '</NumeroLinea>';
             }
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
+            }
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
 
@@ -4977,6 +5008,14 @@ detalles correspondientes.","fecha"=>$fechaEmision,"detalle"=>$payload['detalle'
             else{
                 $xmlString .= '<LineaDetalle>
                   <NumeroLinea>' . $d['numero'] . '</NumeroLinea>';
+            }
+
+            if(!isset($d['codigo']) OR $d['codigo']=='')
+            {
+                return response()->json(array("code"=>"10","data" => "Datos incompletos en la solicitud. El [codigo] en la linea de detalle [".$l."] es requerida", "body" => $payload,"fecha"=>$fechaEmision), 400);
+            }
+            else{
+                $xmlString .='<Codigo>' . $d['codigo'] . '</Codigo>';
             }
             if(isset($d['codigoComercial']) AND $d['codigoComercial']!='')
             {
