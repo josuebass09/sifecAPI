@@ -605,7 +605,7 @@ poder realizar el proceso."), 400);
     public function getFacturaXml(Request $request)
     {
         $clave=$request->get('clave');
-        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.tp_comprobante','COMPROBANTES.clave')->where('clave','=',$payload['clave'])->first();
+        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.tp_comprobante','COMPROBANTES.clave')->where('clave','=',$clave)->first();
 
         $tp_comprobante="";
         if ($comprobante->tp_comprobante==1)
