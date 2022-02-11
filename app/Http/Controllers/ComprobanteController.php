@@ -634,11 +634,11 @@ poder realizar el proceso."), 400);
             $tp_comprobante="FEC emitida por";
         }
 
-        /*if ($archivo1 = fopen($path_archivo, "a"))
+        if ($archivo1 = fopen($path_archivo, "a"))
         {
             fwrite($archivo1,$comprobante->xml_firmado);
             fclose($archivo1);
-        }*/
+        }
         return \response()->download($path_archivo)->deleteFileAfterSend(true);
     }
 
