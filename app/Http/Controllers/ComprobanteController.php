@@ -643,41 +643,46 @@ poder realizar el proceso."), 400);
         return \response()->download($path_archivo)->deleteFileAfterSend(true);
     }
 
-    /*public function getRespuestaHaciendaXml($email)
+    public function getRespuestaXml(Request $request)
     {
+        $clave=$request->get('clave');
+        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_result','COMPROBANTES.tp_comprobante','COMPROBANTES.clave')->where('clave','=',$clave)->first();
+
         $tp_comprobante="";
-        if ($email->getTipoComprobante()==1)
+        if ($comprobante->tp_comprobante==1)
         {
-            $path_archivo = storage_path('app/temp_xml/ATV_FAC_Respuesta-'.$email->getClave().'.xml');
+            $path_archivo =  storage_path('app/temp_xml/ATV_FAC_Respuesta-'.$comprobante->clave.'.xml');
             $tp_comprobante="FE emitida por";
         }
-        elseif ($email->getTipoComprobante()==2)
+        elseif ($comprobante->tp_comprobante==2)
         {
-            $path_archivo = storage_path('app/temp_xml/ATV_ND_Respuesta-'.$email->getClave().'.xml');
+            $path_archivo = storage_path('app/temp_xml/ATV_ND_Respuesta-'.$comprobante->clave.'.xml');
             $tp_comprobante="ND emitida por";
         }
-        elseif ($email->getTipoComprobante()==3)
+        elseif ($comprobante->tp_comprobante==3)
         {
-            $path_archivo = storage_path('app/temp_xml/ATV_NC_Respuesta-'.$email->getClave().'.xml');
+            $path_archivo = storage_path('app/temp_xml/ATV_NC_Respuesta-'.$comprobante->clave.'.xml');
             $tp_comprobante="NC emitida por";
         }
-        elseif ($email->getTipoComprobante()==4)
+        elseif ($comprobante->tp_comprobante==4)
         {
-            $path_archivo = storage_path('app/temp_xml/ATV_TE_Respuesta-'.$email->getClave().'.xml');
+            $path_archivo = storage_path('app/temp_xml/ATV_TE_Respuesta-'.$comprobante->clave.'.xml');
             $tp_comprobante="TE emitido por";
         }
-        elseif ($email->getTipoComprobante()==8)
+        elseif ($comprobante->tp_comprobante==8)
         {
-            $path_archivo = storage_path('app/temp_xml/ATV_FEC_Respuesta-'.$email->getClave().'.xml');
+            $path_archivo = storage_path('app/temp_xml/ATV_FEC_Respuesta-'.$comprobante->clave.'.xml');
             $tp_comprobante="FEC emitida por";
         }
 
-        if ($archivo2 = fopen($path_archivo, "a")) {
-            fwrite($archivo2,$email->getXmlRespuestaHacienda());
-            fclose($archivo2);
+        if ($archivo1 = fopen($path_archivo, "a"))
+        {
+
+            fwrite($archivo1,base64_decode($comprobante->xml_result));
+            fclose($archivo1);
         }
         return \response()->download($path_archivo)->deleteFileAfterSend(true);
-    }*/
+    }
 
     public function sendEmail($email,$smtp_opcional,$api_key,$PDF,$cc)
     {

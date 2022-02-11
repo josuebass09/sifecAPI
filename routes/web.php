@@ -114,6 +114,8 @@ Route::get('/api/downloadReceipt', array('as' => 'downloadReceipt',
     'uses' => 'ComprobanteController@downloadPdfInvoice'));
 Route::get('/api/downloadXmlFactura', array('as' => 'downloadXmlFactura',
     'uses' => 'ComprobanteController@getFacturaXml'));
+    Route::get('/api/downloadXmlRespuesta', array('as' => 'downloadXmlRespuesta',
+    'uses' => 'ComprobanteController@getRespuestaXml'));
 Route::get('/api/downloadIvaMensual', array('as' => '/api/downloadIvaMensual',
     'uses' => 'ComprobanteController@reporteIvaMensual'));
 
