@@ -637,7 +637,7 @@ poder realizar el proceso."), 400);
         if ($archivo1 = fopen($path_archivo, "a"))
         {
 
-            fwrite($archivo1,simplexml_load_string(base64_decode($comprobante->xml_firmado)));
+            fwrite($archivo1,base64_decode($comprobante->xml_firmado));
             fclose($archivo1);
         }
         return \response()->download($path_archivo)->deleteFileAfterSend(true);
