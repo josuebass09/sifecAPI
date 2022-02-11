@@ -602,6 +602,82 @@ poder realizar el proceso."), 400);
         return $xml;
     }
 
+    public function getFacturaXml(Request $request)
+    {
+        $clave=$request->get('clave');
+        $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.tp_comprobante','COMPROBANTES.clave')->where('clave','=',$payload['clave'])->first();
+
+        $tp_comprobante="";
+        if ($comprobante->tp_comprobante==1)
+        {
+            $path_archivo =  storage_path('app/temp_xml/ATV_FAC_Firmada-'.$comprobante->clave.'.xml');
+            $tp_comprobante="FE emitida por";
+        }
+        elseif ($comprobante->tp_comprobante==2)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_ND_Firmada-'.$comprobante->clave.'.xml');
+            $tp_comprobante="ND emitida por";
+        }
+        elseif ($comprobante->tp_comprobante==3)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_NC_Firmada-'.$comprobante->clave.'.xml');
+            $tp_comprobante="NC emitida por";
+        }
+        elseif ($comprobante->tp_comprobante==4)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_TE_Firmada-'.$comprobante->clave.'.xml');
+            $tp_comprobante="TE emitido por";
+        }
+        elseif ($comprobante->tp_comprobante==8)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_FEC_Firmada-'.$comprobante->clave.'.xml');
+            $tp_comprobante="FEC emitida por";
+        }
+
+        if ($archivo1 = fopen($path_archivo, "a"))
+        {
+            fwrite($archivo1,$comprobante->xml_firmado);
+            fclose($archivo1);
+        }
+        return \response()->download($path_archivo)->deleteFileAfterSend(true);
+    }
+
+    /*public function getRespuestaHaciendaXml($email)
+    {
+        $tp_comprobante="";
+        if ($email->getTipoComprobante()==1)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_FAC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="FE emitida por";
+        }
+        elseif ($email->getTipoComprobante()==2)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_ND_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="ND emitida por";
+        }
+        elseif ($email->getTipoComprobante()==3)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_NC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="NC emitida por";
+        }
+        elseif ($email->getTipoComprobante()==4)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_TE_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="TE emitido por";
+        }
+        elseif ($email->getTipoComprobante()==8)
+        {
+            $path_archivo = storage_path('app/temp_xml/ATV_FEC_Respuesta-'.$email->getClave().'.xml');
+            $tp_comprobante="FEC emitida por";
+        }
+
+        if ($archivo2 = fopen($path_archivo, "a")) {
+            fwrite($archivo2,$email->getXmlRespuestaHacienda());
+            fclose($archivo2);
+        }
+        return \response()->download($path_archivo)->deleteFileAfterSend(true);
+    }*/
+
     public function sendEmail($email,$smtp_opcional,$api_key,$PDF,$cc)
     {
         $HOST=env('SMTP_HOST');
