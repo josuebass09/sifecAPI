@@ -5538,11 +5538,11 @@ poder realizar el proceso.","fecha"=>$fecha), 400);
                     return response()->json(array("code"=>"0","msj"=>"Estado ATV no disponible","data"=>$resposeText,"fecha"=>$fecha), 200);
                 }
                 $comprobante=DB::table('COMPROBANTES')->select('COMPROBANTES.xml_firmado','COMPROBANTES.nombre_receptor','COMPROBANTES.email_receptor','COMPROBANTES.tp_comprobante','COMPROBANTES.numeracion','COMPROBANTES.cc')->where('clave','=',$payload['clave'])->first();
-                if(isset($resposeText->estado) AND $resposeText->estado==="aceptado" AND isset($comprobante->email_receptor) AND $comprobante->email_receptor!='')
+                /*if(isset($resposeText->estado) AND $resposeText->estado==="aceptado" AND isset($comprobante->email_receptor) AND $comprobante->email_receptor!='')
                 {
                     $email = new Email(base64_decode($comprobante->xml_firmado), base64_decode($resposeText->resultXml), $payload['clave'], $comprobante->email_receptor, $comprobante->nombre_receptor, (int)str_replace('0', '', $comprobante->tp_comprobante), $emisor->razon_social, $comprobante->numeracion, $emisor->nombre_comercial);
                     $this->sendEmail($email,$emisor->SMTP_OP,$api_key,$emisor->PDF,$comprobante->cc);
-                }
+                }*/
                 return response()->json(array("code"=>"1","data"=>$resposeText,"fecha"=>$fecha), 200);
             }
             catch (\Exception $exception)
